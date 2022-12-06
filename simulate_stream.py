@@ -1,5 +1,6 @@
 import csv
 from scorer import QoSScorer
+from score_functions import mean
 
 def simulate_data_streaming(func_to_simulate, row_limit):
     with open('input.csv') as csvfile:
@@ -12,5 +13,5 @@ def simulate_data_streaming(func_to_simulate, row_limit):
             if n > row_limit:
                 break
 
-scorer = QoSScorer(historic_maxlen=3)
+scorer = QoSScorer(historic_maxlen=3, score_function=mean)
 simulate_data_streaming(scorer.run, row_limit=10)
