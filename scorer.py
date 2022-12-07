@@ -2,41 +2,62 @@ from collections import deque
 from pretty_printer import pretty_print
 
 class QoSScorer:
-    def __init__(self, historic_maxlen, score_function):
+    def __init__(self, history_maxlen, score_function):
         self.score_function = score_function
 
-        self.historic = {
-            "A_CPU": deque(maxlen=historic_maxlen),
-            "A_RAM": deque(maxlen=historic_maxlen),
-            "B_CPU": deque(maxlen=historic_maxlen),
-            "B_RAM": deque(maxlen=historic_maxlen),
-            "C_CPU": deque(maxlen=historic_maxlen),
-            "C_RAM": deque(maxlen=historic_maxlen),
-        }
-        self.predicted = {
-            "A_CPU": 0,
-            "A_RAM": 0,
-            "B_CPU": 0,
-            "B_RAM": 0,
-            "C_CPU": 0,
-            "C_RAM": 0,
-        }
+        self.last_raw_read = ''
 
-    def update_historic(self, row):
-        lat_a, lat_b, lat_c, cpu_a, ram_a, cpu_b, ram_b, cpu_c, ram_c, x_c, y_c = row
-        self.historic["A_CPU"].appendleft(float(cpu_a))
-        self.historic["A_RAM"].appendleft(float(ram_a))
-        self.historic["B_CPU"].appendleft(float(cpu_b))
-        self.historic["B_RAM"].appendleft(float(ram_b))
-        self.historic["C_CPU"].appendleft(float(cpu_c))
-        self.historic["C_RAM"].appendleft(float(ram_c))
+        self.history = {
+            "A": deque(maxlen=history_maxlen),
+            "B": deque(maxlen=history_maxlen),
+            "C": deque(maxlen=history_maxlen),
+        }
+        self.prediction = {
+            "A": (0, 0),
+            "B": (0, 0),
+            "C": (0, 0),
+        }
+        self.last_prediction = dict(self.prediction)
+
+    def update_history(self, row):
+        self.last_raw_read = row
+        lat_a, lat_b, lat_c, cpu_a, ram_a, cpu_b, ram_b, cpu_c, ram_c, x_c, y_c = self.last_raw_read
+        self.history["A"].appendleft((float(cpu_a), float(ram_a)))
+        self.history["B"].appendleft((float(cpu_b), float(ram_b)))
+        self.history["C"].appendleft((float(cpu_c), float(ram_c)))
 
     def calculate_score(self):
-        for i in self.historic:
-            self.predicted[i] = self.score_function(list(self.historic[i]))
+        self.last_prediction = dict(self.prediction)
 
-        pretty_print(self.historic, self.predicted)
+        for i in self.history:
+            self.prediction[i] = self.score_function(list(self.history[i]))
+
+        pretty_print(self.history, self.last_prediction)
+
+    def get_last_processed(self):
+        if not self.last_raw_read:
+            return {"error": "no data yet"}
+        lat_a, lat_b, lat_c, cpu_a, ram_a, cpu_b, ram_b, cpu_c, ram_c, x_c, y_c = self.last_raw_read
+        return {
+            "lat_a" : lat_a,
+            "lat_b" : lat_b,
+            "lat_c" : lat_c,
+            "cpu_a" : cpu_a,
+            "cpu_a_pred" : self.prediction["A"][0],
+            "ram_a" : ram_a,
+            "ram_a_pred" : self.prediction["A"][1],
+            "cpu_b" : cpu_b,
+            "cpu_b_pred" : self.prediction["B"][0],
+            "ram_b" : ram_b,
+            "ram_b_pred" : self.prediction["B"][1],
+            "cpu_c" : cpu_c,
+            "cpu_c_pred" : self.prediction["C"][0],
+            "ram_c" : ram_c,
+            "ram_c_pred" : self.prediction["C"][1],
+            "x_c" : x_c,
+            "y_c" : y_c
+        }
 
     def run(self, row):
-        self.update_historic(row)
+        self.update_history(row)
         self.calculate_score()

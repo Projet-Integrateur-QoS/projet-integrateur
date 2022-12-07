@@ -1,17 +1,25 @@
 import csv
-from scorer import QoSScorer
-from score_functions import mean
+import requests
+import sys
 
-def simulate_data_streaming(func_to_simulate, row_limit):
+
+def simulate_data_streaming(row_limit):
+    n = 0
     with open('input.csv') as csvfile:
         reader = csv.reader(csvfile, delimiter=';')
         headers = next(reader)
-        n = 0
         for row in reader:
-            func_to_simulate(row)
+            raw_row = ";".join(row)
+            requests.post(f'http://localhost:8000/new/{raw_row}')
+            print(f"sent row {raw_row}")
+
             n += 1
-            if n > row_limit:
+            if n >= row_limit:
                 break
 
-scorer = QoSScorer(historic_maxlen=3, score_function=mean)
-simulate_data_streaming(scorer.run, row_limit=10)
+
+if len(sys.argv) != 2:
+    print("Pass number of rows to simulate as parameter")
+    exit(-1)
+
+simulate_data_streaming(int(sys.argv[1]))
