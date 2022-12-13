@@ -1,7 +1,12 @@
 import csv
 import requests
 import sys
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+
+simulator_url = 'http://simulator:' + os.environ['SIMULATOR_PORT']
 
 def simulate_data_streaming(row_limit):
     n = 0
@@ -36,7 +41,7 @@ def simulate_data_streaming(row_limit):
                     "y": y_c,
                 },
             ]
-            requests.post(f'http://localhost:8000/new', json=payload)
+            requests.post(simulator_url + '/new', json=payload)
             print(f"sent row {payload}")
 
             n += 1

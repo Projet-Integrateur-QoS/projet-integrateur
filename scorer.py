@@ -1,5 +1,8 @@
 from flask import Flask, request
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -18,4 +21,4 @@ def calculate_score():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8001, debug=True)
+    app.run(host="0.0.0.0", port=os.environ['SCORER_PORT'], debug=True)

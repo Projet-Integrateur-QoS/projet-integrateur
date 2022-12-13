@@ -3,12 +3,16 @@ from collections import deque
 import requests
 import json
 from custom_encoder import CustomEncoder
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+scorer_url = 'http://scorer:' + os.environ['SCORER_PORT']
 
 HIST_MAXLEN = 3
 
 app = Flask(__name__)
 nodes = dict()
-last_payload = ""
 
 
 def create_new_node():
@@ -24,11 +28,14 @@ def create_new_node():
 
 def calculate_scores():
     for node in nodes:
+        print("debug 1 -------------------------------------------")
+        print(scorer_url)
         response = requests.post(
-            f'http://localhost:8001/score',
+            scorer_url + '/score',
             data=json.dumps(nodes[node], cls=CustomEncoder),
             headers={'Content-Type': 'application/json'},
         )
+        print("debug 2 -------------------------------------------")
 
         response_json = response.json()
 
@@ -52,11 +59,10 @@ def new_input():
     calculate_scores()
 
     # debug pretty print
-    json_formatted_str = json.dumps(nodes, indent=2, cls=CustomEncoder)
-    print(json_formatted_str)
+    print(json.dumps(nodes, indent=2, cls=CustomEncoder))
 
     return payload
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    app.run(host="0.0.0.0", port=os.environ['SIMULATOR_PORT'], debug=True)
