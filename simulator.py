@@ -5,9 +5,15 @@ import json
 from custom_encoder import CustomEncoder
 import os
 from dotenv import load_dotenv
+import random
+
+import numpy as np
+
+
 
 load_dotenv()
 scorer_url = 'http://scorer:' + os.environ['SCORER_PORT']
+import csv
 
 HIST_MAXLEN = 3
 
@@ -28,14 +34,11 @@ def create_new_node():
 
 def calculate_scores():
     for node in nodes:
-        print("debug 1 -------------------------------------------")
-        print(scorer_url)
         response = requests.post(
             scorer_url + '/score',
             data=json.dumps(nodes[node], cls=CustomEncoder),
             headers={'Content-Type': 'application/json'},
         )
-        print("debug 2 -------------------------------------------")
 
         response_json = response.json()
 
