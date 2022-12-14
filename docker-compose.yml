@@ -8,11 +8,3 @@ services:
     volumes:
       - ./:/app
 
-  scorer:
-    build: .
-    command: bash -c "python3 scorer.py"
-    ports:
-      - "${SCORER_PORT}:${SCORER_PORT}"
-    volumes:
-      - ./:/app
-

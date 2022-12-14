@@ -1,0 +1,55 @@
+// simulator
+{
+    "0": {
+        "cpu": [
+            "0.36"
+        ],
+        "ram": [
+            "0.7"
+        ],
+        "x": 0,
+        "y": 0,
+        "cpu_score": 0,
+        "ram_score": 0
+    },
+    "1": {
+        "cpu": [
+            "0.30"
+        ],
+        "ram": [
+            "0.7"
+        ],
+        "x": 1,
+        "y": 2,
+        "cpu_score": 0,
+        "ram_score": 0
+    },
+    "2": {
+        "cpu": [
+            "0.80"
+        ],
+        "ram": [
+            "0.7"
+        ],
+        "x": "3",
+        "y": "1",
+        "cpu_score": 0,
+        "ram_score": 0
+    }
+}
+
+// scorer response
+{
+    "0": {
+        "cpu_score": "0.36",
+        "ram_score": "0.7"
+    },
+    "1": {
+        "cpu_score": "0.3",
+        "ram_score": "0.7"
+    },
+    "2": {
+        "cpu_score": "0.8",
+        "ram_score": "0.7"
+    }
+}

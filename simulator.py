@@ -1,13 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 from collections import deque
-import requests
 import json
 from custom_encoder import CustomEncoder
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
-scorer_url = 'http://scorer:' + os.environ['SCORER_PORT']
 
 HIST_MAXLEN = 3
 
@@ -21,26 +19,9 @@ def create_new_node():
         'ram': deque(maxlen=HIST_MAXLEN),
         'x': None,
         'y': None,
-        'cpu_score': 0,
-        'ram_score': 0,
+        'cpu_score': None,
+        'ram_score': None,
     }
-
-
-def calculate_scores():
-    for node in nodes:
-        print("debug 1 -------------------------------------------")
-        print(scorer_url)
-        response = requests.post(
-            scorer_url + '/score',
-            data=json.dumps(nodes[node], cls=CustomEncoder),
-            headers={'Content-Type': 'application/json'},
-        )
-        print("debug 2 -------------------------------------------")
-
-        response_json = response.json()
-
-        nodes[node]["cpu_score"] = response_json["cpu_score"]
-        nodes[node]["ram_score"] = response_json["ram_score"]
 
 
 @app.route("/new", methods=['POST'])
@@ -56,13 +37,27 @@ def new_input():
         nodes[node_id]['x'] = node['x']
         nodes[node_id]['y'] = node['y']
 
-    calculate_scores()
-
-    # debug pretty print
-    print(json.dumps(nodes, indent=2, cls=CustomEncoder))
-
     return payload
 
+
+@app.route("/", methods=['GET'])
+def get():
+    raw = json.dumps(nodes, indent=2, cls=CustomEncoder)
+    return Response(raw, mimetype='application/json')
+
+@app.route("/update_scores", methods=['POST'])
+def update_scores():
+    payload = request.get_json()
+    for node in payload:
+        node_id = int(node)
+        if node_id not in nodes:
+            print("node " + node_id + " not in list, skipping it")
+            continue
+
+        nodes[node_id]["cpu_score"] = float(payload[node]["cpu_score"])
+        nodes[node_id]["ram_score"] = float(payload[node]["ram_score"])
+
+    return "ok"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=os.environ['SIMULATOR_PORT'], debug=True)

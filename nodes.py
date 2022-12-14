@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-simulator_url = 'http://simulator:' + os.environ['SIMULATOR_PORT']
+simulator_url = 'http://localhost:' + os.environ['SIMULATOR_PORT']
 
 def simulate_data_streaming(row_limit):
     n = 0
