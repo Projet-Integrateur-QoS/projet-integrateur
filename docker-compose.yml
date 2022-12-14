@@ -8,3 +8,15 @@ services:
     volumes:
       - ./:/app
 
+  nodes:
+    build: .
+    command: bash -c "python3 nodes.py"
+    volumes:
+      - ./:/app
+
+  scorer:
+    build: .
+    command: bash -c "python3 scorer.py"
+    volumes:
+      - ./:/app
+
