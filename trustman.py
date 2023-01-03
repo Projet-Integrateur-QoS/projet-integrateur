@@ -78,8 +78,6 @@ def Trustman_Scorer(dataHist):
     
     
     for node in dataHist : 
-        print("DATA HIST",dataHist)
-
         if (dataHist[node]["cpu_score"] == None and dataHist[node]["ram_score"]== None):
             new_score_cpu = 0.5
             new_score_ram = 0.5 
@@ -133,10 +131,6 @@ def Trustman_Scorer(dataHist):
 
     return node_crt
         
-
-
-
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5055, debug=True)
