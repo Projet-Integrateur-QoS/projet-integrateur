@@ -109,7 +109,6 @@ def Trustman_Scorer(dataHist):
     for node in dataHist :
         node_crt[node]={}
         if(dataHist[node]["cpu_score"] != None and dataHist[node]["ram_score"] != None):
-            print("before Diminution = ",dataHist[node]["cpu_score"])
 
             if(int(node) == indice_best_cpu) :
                 new_score_cpu = Augmentation_score(float(dataHist[str(indice_best_cpu)]["cpu_score"]),best_resource_cpu)
