@@ -20,3 +20,11 @@ services:
     volumes:
       - ./:/app
 
+  front:
+    build: ./front2
+    command: npm start
+    ports:
+      - "${FRONT_PORT}:${FRONT_PORT}"
+    volumes:
+      - ./front2:/app
+
