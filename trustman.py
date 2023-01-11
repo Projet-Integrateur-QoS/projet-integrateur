@@ -5,12 +5,12 @@ app = Flask(__name__)
 
 #Fonction qui augment le score actuel en fonction de la resource cpu/ram
 def Augmentation_score(current_score,resource): 
-    new_score = (1-current_score)*resource + current_score
+    new_score = 0.2*(1-current_score)*resource + current_score
     return new_score
 
 #Fonction qui augment le score actuel en fonction de la resource cpu/ram
 def Dimunition_score(current_score,resource,best_resource): 
-    new_score = current_score - ((best_resource - resource)*current_score)
+    new_score = current_score - 0.2*((best_resource - resource)*current_score)
     return new_score
 
 

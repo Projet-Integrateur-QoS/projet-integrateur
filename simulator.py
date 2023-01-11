@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-HIST_MAXLEN = 3
+HIST_MAXLEN = 20
 
 app = Flask(__name__)
 nodes = dict()
