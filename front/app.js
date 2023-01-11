@@ -1,36 +1,18 @@
 // app.js
 
-const express = require("express")
-const app = express()
-const port = 4000
+require('dotenv').config();
+const express = require("express");
+const path = require('path');
+const front_port = process.env.FRONT_PORT
+const sim_port = process.env.SIMULATOR_PORT
 
-app.listen(port, () => console.log(`The server is listening on port ${port}`))
+if (!front_port) {
+  console.log("FRONTEND PORT UNDEFINED")
+  exit()
+}
 
-const { createCanvas } = require('canvas')
-const canvas = createCanvas(1000, 1000)
-const ctx = canvas.getContext('2d')
-ctx.fillStyle = "gray";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-jaune = '#FFD733';
-vert = '#94D800';
-voiture = '#5E5C1A';
-silver = '#B2B2B2';
-
-const draw = require("./draw")
-
-draw.circle(ctx, jaune, 500, 500)
-draw.car(ctx, 100, 100)
-
-let x = 0
-setInterval(function(){
-  draw.circle(ctx, x, 500)
-  x += 100
-  console.log("test " + x)
-}, 1000);
+app.listen(front_port, () => console.log(`The server is listening on port ${front_port}`))
 
 app.get("/", (req, res) => {
-    res.setHeader('Content-Type', 'image/png');
-    canvas.pngStream().pipe(res);
+  res.sendFile(path.join(__dirname+'/index.html'));
 });
-

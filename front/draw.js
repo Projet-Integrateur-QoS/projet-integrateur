@@ -1,3 +1,11 @@
+const drawStuff = function(ctx, data) {
+  ctx.fillStyle = "gray";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (data) {
+    // console.log(data)
+  }
+}
+
 const circle = function(ctx, color, x, y) {
   ctx.fillStyle = color;
   ctx.beginPath();
@@ -73,8 +81,4 @@ const car = function(ctx, x, y) {
     this.y_logo - 0.5 * (this.size_logo * 0.05)
   );
   ctx.fill();
-}
-
-module.exports = {
-  circle, car
 }
