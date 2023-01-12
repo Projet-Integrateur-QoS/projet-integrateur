@@ -43,8 +43,10 @@ def new_input():
 @app.route("/", methods=['GET'])
 def get():
     raw = json.dumps(nodes, indent=2, cls=CustomEncoder)
-    return Response(raw, mimetype='application/json')
-
+    response = Response(raw, mimetype='application/json')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+    
 @app.route("/update_scores", methods=['POST'])
 def update_scores():
     payload = request.get_json()

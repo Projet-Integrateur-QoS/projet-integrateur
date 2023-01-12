@@ -1,5 +1,6 @@
 version: '3.9'
 services:
+
   simulator:
     build: .
     command: bash -c "python3 simulator.py"
@@ -20,3 +21,12 @@ services:
     volumes:
       - ./:/app
 
+  front:
+    build: ./front
+    command: bash -c "npm start"
+    ports:
+      - "${FRONT_PORT}:${FRONT_PORT}"
+    volumes:
+      - ./front:/app
+    environment:
+      - FRONT_PORT=${FRONT_PORT}
