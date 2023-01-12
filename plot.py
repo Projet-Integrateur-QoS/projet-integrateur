@@ -1,13 +1,21 @@
 import matplotlib.pyplot as plt
+import os
 
-def plot(payload, name_method, nodes):
+def remove_file(folder):
+    for root, dirs, files in os.walk(folder):
+        for file in files:
+            file_path = os.path.join(root, file)
+            os.remove(file_path)
+
+
+def plot(payload, folder, nodes, name_method):
     for node in nodes:
-        score = str(payload[node]["cpu_score"]) + "\n"
-        file = open("plot/"+name_method+"/"+ node +".txt", "a")
+        score = str(payload[node][name_method]) + "\n"
+        file = open("plot/"+folder+"/"+ node +".txt", "a")
         file.write(score)
         file.close()
 
-        file = open("plot/"+name_method+"/"+ node +".txt", "r")
+        file = open("plot/"+folder+"/"+ node +".txt", "r")
         x = []
         y = []
         i = 0
@@ -18,6 +26,6 @@ def plot(payload, name_method, nodes):
         
         fig, ax = plt.subplots( nrows=1, ncols=1 )
         ax.plot(x,y)
-        fig.savefig("plot/"+ name_method+"/curve"+node+".png")
+        fig.savefig("plot/"+ folder+"/curve"+node+".png")
         plt.close(fig)
         file.close()
