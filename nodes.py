@@ -6,7 +6,7 @@ import time
 
 load_dotenv()
 
-simulator_url = 'http://simulator:' + os.environ['SIMULATOR_PORT']
+simulator_url = 'http://localhost:' + '8000'
 
 time.sleep(5)
 

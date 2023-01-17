@@ -21,6 +21,8 @@ def lehmer_mean(data,powerRange:tuple):
 
 
 
+# FIXME - Update max possible value based on prio lists
+# FIXME - Only 3 history data -> adapt algorithm  or adapt data sending
 
 # scoreTimePriority -> dict with range as string as key and factor as value
 # Key -> '5-8' '9- '
@@ -29,32 +31,50 @@ def lehmer_mean(data,powerRange:tuple):
 # the json uses a node id per key
 def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,epsilon=0.2,delta=5):
 
-    mode = 0
-    # Check if no priorities
-    if scoreTimePriority:
-        mode = 2
-        scoreTimeFactorList = []
-        for key in scoreTimePriority:
-            start = key[0]
-            end = key[-1]
-            startIndex = 0
-            endIndex = len(data[0]["ram"])
-            if start != " ":
-                startIndex = int(start)
-            if end != " ":
-                endIndex = int(end)
-            for _ in range(startIndex,endIndex):
-                scoreTimeFactorList.append(scoreTimePriority[key])
+    print(data)
+    if data:
+        histSize = len(data["0"]["ram"])
+        nodePrioList = []
+        scorePrioList = []
 
-    if nodePriorities:
-        # if time priorities exists the mode will be update too
-        mode += 1
+        mode = 0
+        # Check if no priorities
+        if scoreTimePriority:
+            mode = 2
+            scoreTimeFactorList = []
+            for key in scoreTimePriority:
+                start = key[0]
+                end = key[-1]
+                startIndex = 0
+                endIndex = histSize
+                if start != " ":
+                    startIndex = int(start)
+                if end != " ":
+                    endIndex = int(end)
+                for _ in range(startIndex,endIndex):
+                    scoreTimeFactorList.append(scoreTimePriority[key])
+
+        if nodePriorities:
+            # if time priorities exists the mode will be update too
+            mode += 1
+
+        if mode == 0:
+            nodePrioList = np.ones(histSize)
+            scorePrioList = np.ones(histSize)
+        elif mode == 1:
+            nodePrioList = nodePriorities
+            scorePrioList = np.ones(histSize)
+        elif mode == 2:
+            nodePrioList = np.ones(histSize)
+            scorePrioList = scoreTimeFactorList
+        else:
+            nodePrioList = nodePriorities
+            scorePrioList = scoreTimeFactorList
+
 
     nodeScore = dict()
     for node in data:
         nodeScore[node] = dict()
-
-        histSize = len(data[0]["ram"])
 
         sumRam = 0
         sumRamSmall = 0
@@ -63,16 +83,18 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
 
         for i in range(histSize):
             if not data[node]["ram"][i]:
-                data[node]["ram"][i] = 0
+                data[node]["ram"][i] = '0'
             if not data[node]["cpu"][i]:
-                data[node]["cpu"][i] = 0
+                data[node]["cpu"][i] = '0'
+
+            print("i",i)
 
             # Compute scores on the whole window and a reduced window
-            sumRam += data[node]["ram"][i] * scoreTimeFactorList[i] + (beta*nodePriorities[node])
-            sumCpu += data[node]["cpu"][i] * scoreTimeFactorList[i] + (beta*nodePriorities[node])
+            sumRam += float(data[node]["ram"][i]) * scorePrioList[i] + (beta*nodePrioList[int(node)])
+            sumCpu += float(data[node]["cpu"][i]) * scorePrioList[i] + (beta*nodePrioList[int(node)])
             if ( abs(histSize - i ) < delta):
-                sumRamSmall += data[node]["ram"][i]*scoreTimeFactorList[i] + (beta*nodePriorities[node])
-                sumCpuSmall += data[node]["cpu"][i]*scoreTimeFactorList[i] + (beta*nodePriorities[node])
+                sumRamSmall += float(data[node]["ram"][i])*scorePrioList[i] + (beta*nodePrioList[int(node)])
+                sumCpuSmall += float(data[node]["cpu"][i])*scorePrioList[i] + (beta*nodePrioList[int(node)])
 
         if abs(sumCpu-sumCpuSmall) > epsilon:
             resCpu = sumCpuSmall
@@ -84,45 +106,11 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
             resRam = sumRam
 
         print("index = ",node)
-        nodeScore[node]["cpu_score"] = (alpha * resCpu)/histSize
-        nodeScore[node]["ram_score"] = (alpha * resRam)/histSize
+        print("hist size",histSize)
+        print("cpu score",resCpu)
+        print("ram score",resRam)
+        # max : 1 + 1 for n times
+        nodeScore[node]["cpu_score"] = (alpha * resCpu)/(2*histSize)
+        nodeScore[node]["ram_score"] = (alpha * resRam)/(2*histSize)
 
     return nodeScore
-
-
-
-def test():
-    data = {
-        0 : {
-            "cpu" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.1,0.1],
-            "ram" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.1,0.1],
-            "cpu_score" : 0.5,
-            "ram_score" : 0.5
-        },
-
-        1 : {
-            "cpu" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.1,0.1],
-            "ram" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.1,0.1],
-            "cpu_score" : 0.5,
-            "ram_score" : 0.5
-        },
-
-        2 : {
-            "cpu" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.7,0.7,0.7],
-            "ram" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.7,0.7,0.7],
-            "cpu_score" : 0.5,
-            "ram_score" : 0.5
-        }
-
-    }
-
-    prioNode = [1,1,1]
-    prioTime = {
-        " -4" : 0.1,
-        "4- " : 1
-    }
-
-    res = peerTrust(data,nodePriorities=prioNode,scoreTimePriority=prioTime)
-    print(res)
-
-test()

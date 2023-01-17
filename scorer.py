@@ -1,12 +1,13 @@
 import os
 import requests
 import time
-import trustman
+import alternate_scorers
+from plot import plot
 from dotenv import load_dotenv
 
 load_dotenv()
 
-simulator_url = 'http://simulator:' + os.environ['SIMULATOR_PORT']
+simulator_url = 'http://localhost:' + '8000'
 
 
 while True:
@@ -16,16 +17,16 @@ while True:
 
     nodes = requests.get(simulator_url).json()
 
-    payload = trustman.Trustman_Scorer(nodes)
+    scorePrio = {
+        " -1" : 1,
+        "1-2" : 0.5,
+        "2- " : 0.2
+    }
 
-    # for node in nodes:
-    #     payload[node] = {}
-    #     cpu_history = [float(cpu) for cpu in nodes[node]["cpu"]]
-    #     ram_history = [float(ram) for ram in nodes[node]["ram"]]
-    #     cpu_score = round(sum(cpu_history) / len(cpu_history), 2)
-    #     ram_score = round(sum(ram_history) / len(ram_history), 2)
-    #     payload[node]["cpu_score"] = cpu_score
-    #     payload[node]["ram_score"] = ram_score
+    payload = alternate_scorers.peerTrust(nodes,scoreTimePriority=scorePrio)
+
+    plot(payload,"peerTrust/ram",nodes,"ram_score")
+    plot(payload,"peerTrust/cpu",nodes,"cpu_score")
 
 
 
