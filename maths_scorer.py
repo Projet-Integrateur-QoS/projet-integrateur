@@ -2,6 +2,7 @@
 import numpy as np
 import statistics as st
 
+
 def maths(nodes):
 
     payload_moy = dict()

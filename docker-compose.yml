@@ -1,32 +1,32 @@
 version: '3.9'
 services:
 
-  # simulator:
-  #   build: .
-  #   command: bash -c "python3 simulator.py"
-  #   ports:
-  #     - "${SIMULATOR_PORT}:${SIMULATOR_PORT}"
-  #   volumes:
-  #     - ./:/app
-
-  # nodes:
-  #   build: .
-  #   command: bash -c "python3 nodes.py"
-  #   volumes:
-  #     - ./:/app 
-
-  # scorer:
-  #   build: .
-  #   command: bash -c "python3 scorer.py"
-  #   volumes:
-  #     - ./:/app
-
-  front:
-    build: ./front
-    command: bash -c "npm start"
+  simulator:
+    build: .
+    command: bash -c "python3 simulator.py"
     ports:
-      - "${FRONT_PORT}:${FRONT_PORT}"
+      - "${SIMULATOR_PORT}:${SIMULATOR_PORT}"
     volumes:
-      - ./front:/app
-    environment:
-      - FRONT_PORT=${FRONT_PORT}
+      - ./:/app
+
+  nodes:
+    build: .
+    command: bash -c "python3 nodes.py"
+    volumes:
+      - ./:/app 
+
+  scorer:
+    build: .
+    command: bash -c "python3 scorer.py"
+    volumes:
+      - ./:/app
+
+  # front:
+  #   build: ./front
+  #   command: bash -c "npm start"
+  #   ports:
+  #     - "${FRONT_PORT}:${FRONT_PORT}"
+  #   volumes:
+  #     - ./front:/app
+  #   environment:
+  #     - FRONT_PORT=${FRONT_PORT}
