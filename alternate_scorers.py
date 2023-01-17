@@ -50,8 +50,9 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
         # if time priorities exists the mode will be update too
         mode += 1
 
-    nodeScore = {}
+    nodeScore = dict()
     for node in data:
+        nodeScore[node] = dict()
 
         histSize = len(data[0]["ram"])
 
@@ -82,46 +83,46 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
         else:
             resRam = sumRam
 
-        nodeScore[node]["cpu_score"] = alpha * resCpu
-        nodeScore[node]["ram_score"] = alpha * resRam
+        print("index = ",node)
+        nodeScore[node]["cpu_score"] = (alpha * resCpu)/histSize
+        nodeScore[node]["ram_score"] = (alpha * resRam)/histSize
 
     return nodeScore
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def test():
-    data = np.ones(20)
-    prioDict = {
-        "0-5" : 0.2,
-        "5-8" : 0.8,
-        "8- " : 0.5
+    data = {
+        0 : {
+            "cpu" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.1,0.1],
+            "ram" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.1,0.1],
+            "cpu_score" : 0.5,
+            "ram_score" : 0.5
+        },
+
+        1 : {
+            "cpu" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.1,0.1],
+            "ram" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.8,0.1,0.1],
+            "cpu_score" : 0.5,
+            "ram_score" : 0.5
+        },
+
+        2 : {
+            "cpu" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.7,0.7,0.7],
+            "ram" : [0.2,0.8,0.5,0.2,0.2,0.2,0.8,0.8,0.8,0.8,0.8,0.8,0.7,0.7,0.7],
+            "cpu_score" : 0.5,
+            "ram_score" : 0.5
+        }
+
     }
 
-    prioDict2 = {
-        " -2" : 0.2,
-        "2-8" : 0.8,
-        "8- " : 0.5
+    prioNode = [1,1,1]
+    prioTime = {
+        " -4" : 0.1,
+        "4- " : 1
     }
-    res = peerTrust(data,scoreTimePriority = prioDict2)
+
+    res = peerTrust(data,nodePriorities=prioNode,scoreTimePriority=prioTime)
     print(res)
 
 test()
