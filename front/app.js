@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 const express = require("express");
+const app = express()
 const path = require('path');
 const front_port = process.env.FRONT_PORT
 const sim_port = process.env.SIMULATOR_PORT
