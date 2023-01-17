@@ -12,6 +12,8 @@ if (!front_port) {
   exit()
 }
 
+app.use(express.static('js'))
+
 app.listen(front_port, () => console.log(`The server is listening on port ${front_port}`))
 
 app.get("/", (req, res) => {
