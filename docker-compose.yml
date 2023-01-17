@@ -1,25 +1,25 @@
 version: '3.9'
 services:
 
-  simulator:
-    build: .
-    command: bash -c "python3 simulator.py"
-    ports:
-      - "${SIMULATOR_PORT}:${SIMULATOR_PORT}"
-    volumes:
-      - ./:/app
+  # simulator:
+  #   build: .
+  #   command: bash -c "python3 simulator.py"
+  #   ports:
+  #     - "${SIMULATOR_PORT}:${SIMULATOR_PORT}"
+  #   volumes:
+  #     - ./:/app
 
-  nodes:
-    build: .
-    command: bash -c "python3 nodes.py"
-    volumes:
-      - ./:/app 
+  # nodes:
+  #   build: .
+  #   command: bash -c "python3 nodes.py"
+  #   volumes:
+  #     - ./:/app 
 
-  scorer:
-    build: .
-    command: bash -c "python3 scorer.py"
-    volumes:
-      - ./:/app
+  # scorer:
+  #   build: .
+  #   command: bash -c "python3 scorer.py"
+  #   volumes:
+  #     - ./:/app
 
   front:
     build: ./front

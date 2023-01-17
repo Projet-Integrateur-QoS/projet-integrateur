@@ -6,6 +6,7 @@ import maths_scorer as ms
 from plot import plot
 from plot import remove_file
 from dotenv import load_dotenv
+from vizu import figure
 
 remove_file("plot")
 
@@ -13,6 +14,7 @@ load_dotenv()
 
 simulator_url = 'http://simulator:' + os.environ['SIMULATOR_PORT']
 
+figure()
 
 while True:
     time.sleep(int(os.environ['SCORER_INTERVAL']))
