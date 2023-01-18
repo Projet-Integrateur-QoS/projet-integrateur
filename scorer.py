@@ -23,6 +23,8 @@ iqv_cpu  = []
 iqv_ram  = []
 trust_cpu= []
 trust_ram= []
+value_cpu= []
+value_ram= []
 
 
 while True:
@@ -45,6 +47,8 @@ while True:
             iqv_ram.append([])
             trust_cpu.append([])
             trust_ram.append([])
+            value_cpu.append([])
+            value_ram.append([])
 
     #Moyenne de l'historique des Cpus et Ram
     payload = ms.maths(nodes)[0]
@@ -74,10 +78,12 @@ while True:
     # plot(payload, "trustman/cpu", nodes, "cpu_score")
     # plot(payload, "trustman/ram", nodes, "ram_score")
 
-    
+    ms.list_value(nodes, value_cpu, "cpu")
+    ms.list_value(nodes, value_ram, "ram")
+
     #Plot des différentes méthodes en fonction des noeuds si on a au moins un score 
-    cpu_l = [moy_cpu, med_cpu, iqv_cpu, trust_cpu]
-    ram_l = [moy_ram, med_ram, iqv_ram, trust_ram]
+    cpu_l = [moy_cpu, med_cpu, iqv_cpu, trust_cpu, value_cpu]
+    ram_l = [moy_ram, med_ram, iqv_ram, trust_ram, value_ram]
     vz.plot(nodes, cpu_l, ram_l)
 
     requests.post(simulator_url + '/update_scores', json=payload)

@@ -31,8 +31,18 @@ def plot(nodes, cpu_l, ram_l):
             #Récupération nombre d'élement pour l'abscisse
             n = len(cpu_l[0][0])
             
-            cpu= [["Moyenne", cpu_l[0]], ["Mediane", cpu_l[1]], ["Equart interquartile", cpu_l[2]], ["Trustman", cpu_l[3]]]
-            ram= [["Moyenne", ram_l[0]], ["Mediane", ram_l[1]], ["Equart interquartile", ram_l[2]], ["Trustman", ram_l[3]]]
+            cpu= [["Moyenne", cpu_l[0]], 
+            ["Mediane", cpu_l[1]], 
+            ["Equart interquartile", cpu_l[2]], 
+            ["Trustman", cpu_l[3]], 
+            ["CPU_Value", cpu_l[4]]]
+
+            ram= [["Moyenne", ram_l[0]], 
+            ["Mediane", ram_l[1]], 
+            ["Equart interquartile", ram_l[2]],
+            ["Trustman", ram_l[3]], 
+            ["RAM_Value", ram_l[4]]]
+            
             if (n==1):
                 for node in nodes:
                     #Initialisation du graphe si première valeur de score

@@ -2,6 +2,9 @@
 import numpy as np
 import statistics as st
 
+def list_value(nodes, list, ressource):
+    for node in nodes:
+        list[int(node)].append(nodes[node][ressource][0])
 
 def maths(nodes):
 
