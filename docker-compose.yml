@@ -2,24 +2,32 @@ version: '3.9'
 services:
 
   simulator:
-    build: .
+    build: ./back
     command: bash -c "python3 simulator.py"
     ports:
       - "${SIMULATOR_PORT}:${SIMULATOR_PORT}"
     volumes:
-      - ./:/app
+      - ./back:/app
+    environment:
+      - SIMULATOR_PORT=${SIMULATOR_PORT}
 
   nodes:
-    build: .
+    build: ./back
     command: bash -c "python3 nodes.py"
     volumes:
-      - ./:/app
+      - ./back:/app
+    environment:
+      - SIMULATOR_PORT=${SIMULATOR_PORT}
+      - NODES_INTERVAL=${NODES_INTERVAL}
 
   scorer:
-    build: .
+    build: ./back
     command: bash -c "python3 scorer.py"
     volumes:
-      - ./:/app
+      - ./back:/app
+    environment:
+      - SIMULATOR_PORT=${SIMULATOR_PORT}
+      - SCORER_INTERVAL=${SCORER_INTERVAL}
 
   front:
     build: ./front
@@ -27,6 +35,6 @@ services:
     ports:
       - "${FRONT_PORT}:${FRONT_PORT}"
     volumes:
-      - ./front:/app
+      - ./front/src:/src
     environment:
       - FRONT_PORT=${FRONT_PORT}
