@@ -1,8 +1,13 @@
 const drawStuff = function(ctx, data) {
   ctx.fillStyle = "gray";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+  offset = (canvas.width-100)/7;
   if (data) {
-    // console.log(data)
+    console.log(data);
+    circle(ctx, "yellow", 50 + data[0]['x']*offset, 50 + data[0]['y']*offset);
+    circle(ctx, "yellow", 50 + data[1]['x']*offset, 50 + data[1]['y']*offset);
+    circle(ctx, "yellow", 50 + data[2]['x']*offset, 50 + data[2]['y']*offset);
+    car(ctx, 50 + data[3]['x']*offset, 50 + data[3]['y']*offset);
   }
 }
 
@@ -14,8 +19,10 @@ const circle = function(ctx, color, x, y) {
 }
 
 const car = function(ctx, x, y) {
+  silver = '#B2B2B2';
+
   // chassis
-  ctx.fillStyle = this.voiture;
+  ctx.fillStyle = '#5E5C1A';
   ctx.fillRect(x - 37.5, y - 10, 75, 15);
 
   // back wheel
@@ -23,7 +30,7 @@ const car = function(ctx, x, y) {
   ctx.beginPath();
   ctx.arc(x - 17.5, y + 7, 7.5, 0, 2 * Math.PI);
   ctx.fill();
-  ctx.fillStyle = this.silver;
+  ctx.fillStyle = silver;
   ctx.beginPath();
   ctx.arc(x - 17.5, y + 7, 3, 0, 2 * Math.PI);
   ctx.fill();
@@ -33,7 +40,7 @@ const car = function(ctx, x, y) {
   ctx.beginPath();
   ctx.arc(x + 17.5, y + 7, 7.5, 0, 2 * Math.PI);
   ctx.fill();
-  ctx.fillStyle = this.silver;
+  ctx.fillStyle = silver;
   ctx.beginPath();
   ctx.arc(x + 17.5, y + 7, 3, 0, 2 * Math.PI);
   ctx.fill();
@@ -48,37 +55,38 @@ const car = function(ctx, x, y) {
   ctx.fill();
 
   // logo
-  this.x_logo = x + 32.5;
-  this.y_logo = y - 16;
-  ctx.strokeStyle = this.silver;
-  ctx.fillStyle = this.silver;
+  size_logo = 7.5;
+  x_logo = x + 32.5;
+  y_logo = y - 16;
+  ctx.strokeStyle = silver;
+  ctx.fillStyle = silver;
   ctx.fillRect(
-    this.x_logo - 0.5,
-    this.y_logo + this.size_logo / 2 + 1,
+    x_logo - 0.5,
+    y_logo + size_logo / 2 + 1,
     1,
     1
   );
   ctx.beginPath();
-  ctx.arc(this.x_logo, this.y_logo, this.size_logo / 2, 0, 2 * Math.PI);
+  ctx.arc(x_logo, y_logo, size_logo / 2, 0, 2 * Math.PI);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(this.x_logo, this.y_logo - this.size_logo / 2);
+  ctx.moveTo(x_logo, y_logo - size_logo / 2);
   ctx.lineTo(
-    this.x_logo - (Math.sqrt(3) / 2) * (this.size_logo * 0.05),
-    this.y_logo - 0.5 * (this.size_logo * 0.05)
+    x_logo - (Math.sqrt(3) / 2) * (size_logo * 0.05),
+    y_logo - 0.5 * (size_logo * 0.05)
   );
   ctx.lineTo(
-    this.x_logo - (Math.sqrt(3) / 2) * (this.size_logo / 2),
-    this.y_logo + 0.5 * (this.size_logo / 2)
+    x_logo - (Math.sqrt(3) / 2) * (size_logo / 2),
+    y_logo + 0.5 * (size_logo / 2)
   );
-  ctx.lineTo(this.x_logo, this.y_logo + this.size_logo * 0.05);
+  ctx.lineTo(x_logo, y_logo + size_logo * 0.05);
   ctx.lineTo(
-    this.x_logo + (Math.sqrt(3) / 2) * (this.size_logo / 2),
-    this.y_logo + 0.5 * (this.size_logo / 2)
+    x_logo + (Math.sqrt(3) / 2) * (size_logo / 2),
+    y_logo + 0.5 * (size_logo / 2)
   );
   ctx.lineTo(
-    this.x_logo + (Math.sqrt(3) / 2) * (this.size_logo * 0.05),
-    this.y_logo - 0.5 * (this.size_logo * 0.05)
+    x_logo + (Math.sqrt(3) / 2) * (size_logo * 0.05),
+    y_logo - 0.5 * (size_logo * 0.05)
   );
   ctx.fill();
 }
