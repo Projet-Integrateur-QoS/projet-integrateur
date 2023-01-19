@@ -9,12 +9,12 @@ def Dimunition_score(current_score,resource,best_resource):
     return new_score
 
 
-def Trustman_Scorer(dataHist):
+def Trustman_Scorer(dataHist, payload):
     list_cpu = []
     list_ram = []
 
     for node in dataHist :
-        if (dataHist[node]["cpu_score"] == None and dataHist[node]["ram_score"]== None):
+        if (dataHist[node]["cpu_score_trust"] == None and dataHist[node]["ram_score_trust"]== None):
             new_score_cpu = 0.5
             new_score_ram = 0.5
         #Check si une valeur de cpu ou de ram d'une Node est à None
@@ -40,28 +40,24 @@ def Trustman_Scorer(dataHist):
 
     #if None score à score à 0
 
-    node_crt = dict()
     #Faire une boucle sur les nodes restant et dimunition score
     for node in dataHist :
-        node_crt[node]={}
-        if(dataHist[node]["cpu_score"] != None and dataHist[node]["ram_score"] != None):
+        if(dataHist[node]["cpu_score_trust"] != None and dataHist[node]["ram_score_trust"] != None):
 
             if(int(node) == indice_best_cpu) :
-                new_score_cpu = Augmentation_score(float(dataHist[str(indice_best_cpu)]["cpu_score"]),best_resource_cpu)
+                new_score_cpu = Augmentation_score(float(dataHist[str(indice_best_cpu)]["cpu_score_trust"]),best_resource_cpu)
             else :
                 #diminution
-                new_score_cpu = Dimunition_score(float(dataHist[node]["cpu_score"]),float(dataHist[node]["cpu"][0]),best_resource_cpu)
+                new_score_cpu = Dimunition_score(float(dataHist[node]["cpu_score_trust"]),float(dataHist[node]["cpu"][0]),best_resource_cpu)
 
             if(int(node) == indice_best_ram) :
                 #Mettre à jour le score des nodes
-                new_score_ram = Augmentation_score(float(dataHist[str(indice_best_ram)]["ram_score"]),best_resource_ram)
+                new_score_ram = Augmentation_score(float(dataHist[str(indice_best_ram)]["ram_score_trust"]),best_resource_ram)
             else :
-                new_score_ram = Dimunition_score(float(dataHist[node]["ram_score"]),float(dataHist[node]["ram"][0]),best_resource_ram)
+                new_score_ram = Dimunition_score(float(dataHist[node]["ram_score_trust"]),float(dataHist[node]["ram"][0]),best_resource_ram)
         else:
             new_score_cpu = 0.5
             new_score_ram = 0.5
 
-        node_crt[node]["cpu_score"] = new_score_cpu
-        node_crt[node]["ram_score"] = new_score_ram
-
-    return node_crt
+        payload[node]["cpu_score_trust"] = new_score_cpu
+        payload[node]["ram_score_trust"] = new_score_ram

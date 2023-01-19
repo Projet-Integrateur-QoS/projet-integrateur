@@ -36,7 +36,7 @@ while True:
 
     #Initialisation de liste vide de score pour chacune des méthodes
     if (moy_cpu==[] and nodes!={}):
-        #Compte le nombre de nodes
+        #Compte le nombre de nodes 
         n = vz.nb_nodes(nodes)
         for i in range(n):
             moy_cpu.append([])
@@ -50,31 +50,31 @@ while True:
             value_cpu.append([])
             value_ram.append([])
 
+    #Calcul des nouveaux scores de chaque fonction
+    ms.maths(nodes, payload)
+
     #Moyenne de l'historique des Cpus et Ram
-    payload = ms.maths(nodes)[0]
     vz.append_m(nodes, moy_cpu, payload, "cpu_score_moy")
     vz.append_m(nodes, moy_ram, payload, "ram_score_moy")
     # plot(payload, "moyenne/cpu", nodes, "cpu_score_moy")
     # plot(payload, "moyenne/ram", nodes, "ram_score_moy")
 
     #Cpu/Ram median sur l'historique des Cpus et Ram
-    payload = ms.maths(nodes)[1]
     vz.append_m(nodes, med_cpu, payload, "cpu_score_med")
     vz.append_m(nodes, med_ram, payload, "ram_score_med")
     # plot(payload, "mediane/cpu", nodes, "cpu_score_med")
     # plot(payload, "mediane/ram", nodes, "ram_score_med")
 
     #Ecart interquartile sur l'historique des cpus et ram
-    payload = ms.maths(nodes)[2]
     vz.append_m(nodes, iqv_cpu, payload, "cpu_score_iqv")
     vz.append_m(nodes, iqv_ram, payload, "ram_score_iqv")
     # plot(payload, "iqv/cpu", nodes, "cpu_score_iqv")
     # plot(payload, "iqv/ram", nodes, "ram_score_iqv")
 
     #Fonction Trustman
-    payload = trustman.Trustman_Scorer(nodes)
-    vz.append_m(nodes, trust_cpu, payload, "cpu_score")
-    vz.append_m(nodes, trust_ram, payload, "ram_score")
+    trustman.Trustman_Scorer(nodes, payload)
+    vz.append_m(nodes, trust_cpu, payload, "cpu_score_trust")
+    vz.append_m(nodes, trust_ram, payload, "ram_score_trust")
     # plot(payload, "trustman/cpu", nodes, "cpu_score")
     # plot(payload, "trustman/ram", nodes, "ram_score")
 
