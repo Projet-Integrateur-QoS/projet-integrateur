@@ -71,8 +71,8 @@ def maths(nodes, payload):
         payload[node]["ram_score_harmonic"] = harmonic_mean(ram_history)
 
         # Lehmer mean
-        payload[node]["cpu_score_lehmer"] = lehmer_mean(cpu_history,2)
-        payload[node]["ram_score_lehmer"] = lehmer_mean(ram_history,2)
+        payload[node]["cpu_score_lehmer"] = lehmer_mean(cpu_history,5)
+        payload[node]["ram_score_lehmer"] = lehmer_mean(ram_history,5)
 
 
 def score_glob(nodes, name_f, rate_cpu, rate_ram, payload):

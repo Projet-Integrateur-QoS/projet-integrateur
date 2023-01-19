@@ -27,6 +27,16 @@ def create_new_node():
         'ram_score_med'  : None,
         'cpu_score_iqv'  : None,
         'ram_score_iqv'  : None,
+        'cpu_score_geom'  : None,
+        'ram_score_geom'  : None,
+        'cpu_score_range'  : None,
+        'ram_score_range'  : None,
+        'cpu_score_harmonic'  : None,
+        'ram_score_harmonic'  : None,
+        'cpu_score_lehmer'  : None,
+        'ram_score_lehmer'  : None,
+        'cpu_score_peer'  : None,
+        'ram_score_peer'  : None,
         'score_glob'     : None,
     }
 
@@ -75,6 +85,17 @@ def update_scores():
         nodes[node_id]["ram_score_med"] = round(float(payload[node]["ram_score_med"]),2)
         nodes[node_id]["cpu_score_iqv"] = round(float(payload[node]["cpu_score_iqv"]),2)
         nodes[node_id]["ram_score_iqv"] = round(float(payload[node]["ram_score_iqv"]),2)
+
+        nodes[node_id]["cpu_score_geom"] = round(float(payload[node]["cpu_score_geom"]),2)
+        nodes[node_id]["ram_score_geom"] = round(float(payload[node]["ram_score_geom"]),2)
+        nodes[node_id]["cpu_score_range"] = round(float(payload[node]["cpu_score_range"]),2)
+        nodes[node_id]["ram_score_range"] = round(float(payload[node]["ram_score_range"]),2)
+        nodes[node_id]["cpu_score_harmonic"] = round(float(payload[node]["cpu_score_harmonic"]),2)
+        nodes[node_id]["ram_score_harmonic"] = round(float(payload[node]["ram_score_harmonic"]),2)
+        nodes[node_id]["cpu_score_lehmer"] = round(float(payload[node]["cpu_score_lehmer"]),2)
+        nodes[node_id]["ram_score_lehmer"] = round(float(payload[node]["ram_score_lehmer"]),2)
+        nodes[node_id]["cpu_score_peer"] = round(float(payload[node]["cpu_score_peer"]),2)
+        nodes[node_id]["ram_score_peer"] = round(float(payload[node]["ram_score_peer"]),2)
 
         if(payload[node]["score_glob"]!= None) :
             nodes[node_id]["score_glob"] = round(float(payload[node]["score_glob"]),2)
