@@ -9,8 +9,6 @@ def list_value(nodes, list, ressource):
 def maths(nodes, payload):
 
     for node in nodes:
-        payload[node] = {}
-
 
         cpu_history = [float(cpu) for cpu in nodes[node]["cpu"]]
         ram_history = [float(ram) for ram in nodes[node]["ram"]]
@@ -40,3 +38,22 @@ def maths(nodes, payload):
         payload[node]["ram_score_iqv"] = ram_score       
 
 
+def score_glob(nodes, name_f, rate_cpu, rate_ram, payload):
+
+    if ((rate_cpu+rate_ram)!=1):
+        raise Exception("Taux invalides la somme doit valoir 1\n")
+
+    for node in nodes:
+        if (payload[node]["cpu_score_moy"]!=None):
+            if (name_f=="Moyenne"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_moy"]) + (rate_ram * payload[node]["ram_score_moy"])
+            elif (name_f=="Mediane"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_med"]) + (rate_ram * payload[node]["ram_score_med"])
+            elif (name_f=="IQR"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_iqr"]) + (rate_ram * payload[node]["ram_score_iqr"])
+            elif (name_f=="Trustman"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_trust"]) + (rate_ram * payload[node]["ram_score_trust"])
+            else:
+                raise Exception("Nom de fonction invalide, nom possible : Moyenne, Mediane, IQR ou Trustman")
+        else:
+            payload[node]["score_glob"] = None

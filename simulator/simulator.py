@@ -21,12 +21,13 @@ def create_new_node():
         'y': None,
         'cpu_score_trust': None,
         'ram_score_trust': None,
-        'cpu_score_moy' : None,
-        'ram_score_moy' : None,
-        'cpu_score_med' : None,
-        'ram_score_med' : None,
-        'cpu_score_iqv' : None,
-        'ram_score_iqv' : None,
+        'cpu_score_moy'  : None,
+        'ram_score_moy'  : None,
+        'cpu_score_med'  : None,
+        'ram_score_med'  : None,
+        'cpu_score_iqv'  : None,
+        'ram_score_iqv'  : None,
+        'score_glob'     : None,
     }
 
 
@@ -48,7 +49,11 @@ def new_input():
 
 @app.route("/", methods=['GET'])
 def get():
-    raw = json.dumps(nodes, indent=2, cls=CustomEncoder)
+    new_nodes = dict()
+    for node in list(nodes.keys())[:-1]:
+        new_nodes[int(node)]=nodes[int(node)]
+
+    raw = json.dumps(new_nodes, indent=2, cls=CustomEncoder)
     response = Response(raw, mimetype='application/json')
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
@@ -70,6 +75,9 @@ def update_scores():
         nodes[node_id]["ram_score_med"] = round(float(payload[node]["ram_score_med"]),2)
         nodes[node_id]["cpu_score_iqv"] = round(float(payload[node]["cpu_score_iqv"]),2)
         nodes[node_id]["ram_score_iqv"] = round(float(payload[node]["ram_score_iqv"]),2)
+
+        if(payload[node]["score_glob"]!= None) :
+            nodes[node_id]["score_glob"] = round(float(payload[node]["score_glob"]),2)
 
 
     return "ok"

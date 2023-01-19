@@ -25,6 +25,7 @@ trust_cpu= []
 trust_ram= []
 value_cpu= []
 value_ram= []
+score_glob=[]
 
 
 while True:
@@ -33,6 +34,9 @@ while True:
     payload = {}
 
     nodes = requests.get(simulator_url).json()
+
+    for node in nodes:
+        payload[node] = dict ()
 
     #Initialisation de liste vide de score pour chacune des méthodes
     if (moy_cpu==[] and nodes!={}):
@@ -49,6 +53,7 @@ while True:
             trust_ram.append([])
             value_cpu.append([])
             value_ram.append([])
+            score_glob.append([])
 
     #Calcul des nouveaux scores de chaque fonction
     ms.maths(nodes, payload)
@@ -81,9 +86,20 @@ while True:
     ms.list_value(nodes, value_cpu, "cpu")
     ms.list_value(nodes, value_ram, "ram")
 
+    #Score globale en fonction de la méthode choisi : Moyenne, Mediane, Ecart interquartil( écrire IQV) ou Trustman
+    #Choisir importance du taux cpu et ram (0.7 : cpu et 0.3 : ram par exemple), la somme doit valoir 1
+    rate_cpu = 0.7
+    rate_ram = 0.3
+    name = "Trustman"
+    ms.score_glob(nodes, name, rate_cpu, rate_ram, payload)
+    vz.append_m(nodes, score_glob, payload, "score_glob")
+
     #Plot des différentes méthodes en fonction des noeuds si on a au moins un score
     cpu_l = [moy_cpu, med_cpu, iqv_cpu, trust_cpu, value_cpu]
     ram_l = [moy_ram, med_ram, iqv_ram, trust_ram, value_ram]
     vz.plot(nodes, cpu_l, ram_l)
+
+    #plot global score 
+    vz.plot_score_glob(nodes, score_glob, name)
 
     requests.post(simulator_url + '/update_scores', json=payload)

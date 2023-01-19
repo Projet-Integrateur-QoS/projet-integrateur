@@ -57,3 +57,20 @@ def plot(nodes, cpu_l, ram_l):
                     #Maj du graphe avec les nouvelles valeurs de score
                     maj_figure(cpu, x,  int(node), "cpu")
                     maj_figure(ram, x,  int(node), "ram")
+
+def plot_score_glob(nodes, l, name):
+    if (nodes !={}):
+        if (l[0]!=[]):
+            n = len(l[0])
+
+            xn = []
+            for i in range(n):
+                xn.append(i)
+
+            score = pgo.Figure(layout=pgo.Layout(title="Global Score for the function "+name))
+            score.update_layout(xaxis_title="Time",yaxis_title="Score")
+            for node in nodes:
+                yn = l[int(node)]
+                score.add_trace(pgo.Scatter(x=xn, y=yn, mode='lines+markers', name="Node_"+node))
+
+            score.write_html("plot/global/evol_score_node.html", auto_open=True)
