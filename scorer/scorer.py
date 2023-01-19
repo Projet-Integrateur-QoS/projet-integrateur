@@ -30,13 +30,16 @@ value_ram= []
 while True:
     time.sleep(int(os.environ['SCORER_INTERVAL']))
 
-    payload = {}
 
     nodes = requests.get(simulator_url).json()
 
+    payload = {}
+    for node in nodes:
+        payload[node] = dict()
+
     #Initialisation de liste vide de score pour chacune des méthodes
     if (moy_cpu==[] and nodes!={}):
-        #Compte le nombre de nodes 
+        #Compte le nombre de nodes
         n = vz.nb_nodes(nodes)
         for i in range(n):
             moy_cpu.append([])
