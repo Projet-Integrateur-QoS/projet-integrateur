@@ -1,6 +1,4 @@
-from flask import Flask, request, Response
 
-app = Flask(__name__)
 
 
 #Fonction qui augment le score actuel en fonction de la resource cpu/ram
@@ -71,6 +69,3 @@ def Trustman_Scorer(dataHist):
 
     return node_crt
         
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5055, debug=True)

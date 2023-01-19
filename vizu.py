@@ -25,6 +25,7 @@ def maj_figure(list, xn, n, path):
 
     fig.write_html("plot/"+path+"/node_" + str(n) +".html", auto_open=True)
 
+#affichage de chaque fonction général cpu ou ram 
 def plot(nodes, cpu_l, ram_l):
     if (nodes !={}):
         if (cpu_l[0][0]!=[]):
@@ -57,3 +58,4 @@ def plot(nodes, cpu_l, ram_l):
                     #Maj du graphe avec les nouvelles valeurs de score
                     maj_figure(cpu, x,  int(node), "cpu")
                     maj_figure(ram, x,  int(node), "ram")
+

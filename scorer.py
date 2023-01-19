@@ -51,21 +51,21 @@ while True:
             value_ram.append([])
 
     #Moyenne de l'historique des Cpus et Ram
-    payload = ms.maths(nodes)[0]
+    ms.maths(nodes, payload)
     vz.append_m(nodes, moy_cpu, payload, "cpu_score_moy")
     vz.append_m(nodes, moy_ram, payload, "ram_score_moy")
     # plot(payload, "moyenne/cpu", nodes, "cpu_score_moy")
     # plot(payload, "moyenne/ram", nodes, "ram_score_moy")
 
     #Cpu/Ram median sur l'historique des Cpus et Ram
-    payload = ms.maths(nodes)[1]
+    ms.maths(nodes, payload)
     vz.append_m(nodes, med_cpu, payload, "cpu_score_med")
     vz.append_m(nodes, med_ram, payload, "ram_score_med")
     # plot(payload, "mediane/cpu", nodes, "cpu_score_med")
     # plot(payload, "mediane/ram", nodes, "ram_score_med")
 
     #Ecart interquartile sur l'historique des cpus et ram
-    payload = ms.maths(nodes)[2]
+    ms.maths(nodes, payload)
     vz.append_m(nodes, iqv_cpu, payload, "cpu_score_iqv")
     vz.append_m(nodes, iqv_ram, payload, "ram_score_iqv")
     # plot(payload, "iqv/cpu", nodes, "cpu_score_iqv")

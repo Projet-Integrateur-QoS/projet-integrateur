@@ -21,6 +21,12 @@ def create_new_node():
         'y': None,
         'cpu_score': None,
         'ram_score': None,
+        'cpu_score_moy' : None,
+        'ram_score_moy' : None,
+        'cpu_score_med' : None,
+        'ram_score_med' : None,
+        'cpu_score_iqv' : None,
+        'ram_score_iqv' : None,
     }
 
 
@@ -56,8 +62,14 @@ def update_scores():
             print("node " + node_id + " not in list, skipping it")
             continue
 
-        nodes[node_id]["cpu_score"] = float(payload[node]["cpu_score"])
-        nodes[node_id]["ram_score"] = float(payload[node]["ram_score"])
+        nodes[node_id]["cpu_score"]     = round(float(payload[node]["cpu_score"]),2)
+        nodes[node_id]["ram_score"]     = round(float(payload[node]["ram_score"]),2)
+        nodes[node_id]["cpu_score_moy"] = round(float(payload[node]["cpu_score_moy"]),2)
+        nodes[node_id]["ram_score_moy"] = round(float(payload[node]["ram_score_moy"]),2)
+        nodes[node_id]["cpu_score_med"] = round(float(payload[node]["cpu_score_med"]),2)
+        nodes[node_id]["ram_score_med"] = round(float(payload[node]["cpu_score_med"]),2)
+        nodes[node_id]["cpu_score_iqv"] = round(float(payload[node]["cpu_score_iqv"]),2)
+        nodes[node_id]["ram_score_iqv"] = round(float(payload[node]["ram_score_iqv"]),2)
 
     return "ok"
 
