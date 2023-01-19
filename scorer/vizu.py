@@ -1,13 +1,13 @@
 import plotly.graph_objects as pgo
 
-#compte du nombre de nodes 
-def nb_nodes(nodes): 
+#compte du nombre de nodes
+def nb_nodes(nodes):
     i=0
     for node in nodes:
         i+=1
     return i
 
-#ajout du nouveau score 
+#ajout du nouveau score
 def append_m(nodes, list, payload, name_method):
 
     for node in nodes:
@@ -30,19 +30,29 @@ def plot(nodes, cpu_l, ram_l):
         if (cpu_l[0][0]!=[]):
             #Récupération nombre d'élement pour l'abscisse
             n = len(cpu_l[0][0])
-            
-            cpu= [["Moyenne", cpu_l[0]], 
-            ["Mediane", cpu_l[1]], 
-            ["Equart interquartile", cpu_l[2]], 
-            ["Trustman", cpu_l[3]], 
-            ["CPU_Value", cpu_l[4]]]
 
-            ram= [["Moyenne", ram_l[0]], 
-            ["Mediane", ram_l[1]], 
+            cpu= [["Moyenne", cpu_l[0]],
+            ["Mediane", cpu_l[1]],
+            ["Equart interquartile", cpu_l[2]],
+            ["Trustman", cpu_l[8]],
+            ["Moyenne Geometrique",cpu_l[3]],
+            ["Mid range",cpu_l[4]],
+            ["Moyenne harmonique",cpu_l[5]],
+            ["Moyenne de Lehmer",cpu_l[6]],
+            ["PeerTrust",cpu_l[7]],
+            ["CPU_Value", cpu_l[9]]]
+
+            ram= [["Moyenne", ram_l[0]],
+            ["Mediane", ram_l[1]],
             ["Equart interquartile", ram_l[2]],
-            ["Trustman", ram_l[3]], 
-            ["RAM_Value", ram_l[4]]]
-            
+            ["Trustman", ram_l[8]],
+            ["Moyenne Geometrique",ram_l[3]],
+            ["Mid range",ram_l[4]],
+            ["Moyenne harmonique",ram_l[5]],
+            ["Moyenne de Lehmer",ram_l[6]],
+            ["PeerTrust",ram_l[7]],
+            ["RAM_Value", ram_l[9]]]
+
             if (n==1):
                 for node in nodes:
                     #Initialisation du graphe si première valeur de score
