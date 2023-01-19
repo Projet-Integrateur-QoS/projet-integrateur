@@ -20,10 +20,6 @@ def lehmer_mean(data,powerRange:tuple):
 
 
 
-
-# FIXME - Update max possible value based on prio lists
-# FIXME - Only 3 history data -> adapt algorithm  or adapt data sending
-
 # scoreTimePriority -> dict with range as string as key and factor as value
 # Key -> '5-8' '9- '
 # nodePriorities -> dict with node as key and factor as value
@@ -72,9 +68,13 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
             scorePrioList = scoreTimeFactorList
 
 
+    scorePrioSum = np.sum(scorePrioList)
     nodeScore = dict()
+
     for node in data:
         nodeScore[node] = dict()
+
+        maxValue = scorePrioSum + beta*nodePrioList[int(node)]
 
         sumRam = 0
         sumRamSmall = 0
@@ -90,11 +90,11 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
             print("i",i)
 
             # Compute scores on the whole window and a reduced window
-            sumRam += float(data[node]["ram"][i]) * scorePrioList[i] + (beta*nodePrioList[int(node)])
-            sumCpu += float(data[node]["cpu"][i]) * scorePrioList[i] + (beta*nodePrioList[int(node)])
+            sumRam += float(data[node]["ram"][i]) * scorePrioList[i]
+            sumCpu += float(data[node]["cpu"][i]) * scorePrioList[i]
             if ( abs(histSize - i ) < delta):
-                sumRamSmall += float(data[node]["ram"][i])*scorePrioList[i] + (beta*nodePrioList[int(node)])
-                sumCpuSmall += float(data[node]["cpu"][i])*scorePrioList[i] + (beta*nodePrioList[int(node)])
+                sumRamSmall += float(data[node]["ram"][i])*scorePrioList[i]
+                sumCpuSmall += float(data[node]["cpu"][i])*scorePrioList[i]
 
         if abs(sumCpu-sumCpuSmall) > epsilon:
             resCpu = sumCpuSmall
@@ -105,12 +105,17 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
         else:
             resRam = sumRam
 
+        resCpu += beta*nodePrioList[int(node)]
+        resRam += beta*nodePrioList[int(node)]
+
         print("index = ",node)
         print("hist size",histSize)
-        print("cpu score",resCpu)
-        print("ram score",resRam)
-        # max : 1 + 1 for n times
-        nodeScore[node]["cpu_score"] = (alpha * resCpu)/(2*histSize)
-        nodeScore[node]["ram_score"] = (alpha * resRam)/(2*histSize)
+        print("cpu score",float("{:.2f}".format((alpha * resCpu)/maxValue)))
+        print("ram score",float("{:.2f}".format((alpha * resRam)/maxValue)))
+
+
+
+        nodeScore[node]["cpu_score"] = float("{:.2f}".format((alpha * resCpu)/maxValue))
+        nodeScore[node]["ram_score"] = float("{:.2f}".format((alpha * resRam)/maxValue))
 
     return nodeScore
