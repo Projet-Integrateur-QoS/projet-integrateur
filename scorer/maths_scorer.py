@@ -1,10 +1,29 @@
 #import statistics
 import numpy as np
 import statistics as st
+import math
 
 def list_value(nodes, list, ressource):
     for node in nodes:
         list[int(node)].append(nodes[node][ressource][0])
+
+def geometric_mean(data):
+    x = np.prod(data)
+    res = math.exp(math.log(x)/len(data))
+    return res
+
+def mid_range(data):
+    return 0.5*(max(data)+min(data))
+
+def harmonic_mean(data):
+    divide = np.sum(1/data)
+    return len(data)/divide
+
+def lehmer_mean(data,power):
+    f = lambda x : np.sum(np.power(data,x))
+    return f(power-1)/f(power)
+
+
 
 def maths(nodes, payload):
 
@@ -32,11 +51,34 @@ def maths(nodes, payload):
         Q3_cpu = np.percentile(cpu_history,75)
         cpu_score = Q3_cpu - Q1_cpu
         Q1_ram = np.percentile(ram_history,25)
-        Q3_ram = np.percentile(ram_history,75)  
+        Q3_ram = np.percentile(ram_history,75)
         ram_score = Q3_ram - Q1_ram
         payload[node]["cpu_score_iqv"] = cpu_score
-        payload[node]["ram_score_iqv"] = ram_score       
+        payload[node]["ram_score_iqv"] = ram_score
 
+        # Geometric mean
+        payload[node]["cpu_score_geom"] = geometric_mean(cpu_history)
+        payload[node]["ram_score_geom"] = geometric_mean(ram_history)
+
+        # mid range
+        payload[node]["cpu_score_range"] = mid_range(cpu_history)
+        payload[node]["ram_score_range"] = mid_range(ram_history)
+
+        # Harmonic mean
+        payload[node]["cpu_score_harmonic"] = harmonic_mean(cpu_history)
+        payload[node]["ram_score_harmonic"] = harmonic_mean(ram_history)
+
+        # Lehmer mean
+        payload[node]["cpu_score_lehmer"] = lehmer_mean(cpu_history,2)
+        payload[node]["ram_score_lehmer"] = lehmer_mean(ram_history,2)
+
+        # Geometric mean
+        payload[node]["cpu_score_lehmer"] = lehmer_mean(cpu_history,2)
+        payload[node]["ram_score_lehmer"] = lehmer_mean(ram_history,2)
+
+        # Geometric mean
+        payload[node]["cpu_score_lehmer"] = lehmer_mean(cpu_history,2)
+        payload[node]["ram_score_lehmer"] = lehmer_mean(ram_history,2)
 
 def score_glob(nodes, name_f, rate_cpu, rate_ram, payload):
 
@@ -53,7 +95,17 @@ def score_glob(nodes, name_f, rate_cpu, rate_ram, payload):
                 payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_iqr"]) + (rate_ram * payload[node]["ram_score_iqr"])
             elif (name_f=="Trustman"):
                 payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_trust"]) + (rate_ram * payload[node]["ram_score_trust"])
+            elif (name_f=="PeerTrust"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_peer"]) + (rate_ram * payload[node]["ram_score_peer"])
+            elif (name_f=="Geom"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_geom"]) + (rate_ram * payload[node]["ram_score_geom"])
+            elif (name_f=="MidRange"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_range"]) + (rate_ram * payload[node]["ram_score_range"])
+            elif (name_f=="Harmonic"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_harmonic"]) + (rate_ram * payload[node]["ram_score_harmonic"])
+            elif (name_f=="Lehmers"):
+                payload[node]["score_glob"] = (rate_cpu * payload[node]["cpu_score_lehmer"]) + (rate_ram * payload[node]["ram_score_lehmer"])
             else:
-                raise Exception("Nom de fonction invalide, nom possible : Moyenne, Mediane, IQR ou Trustman")
+                raise Exception("Nom de fonction invalide, nom possible : Moyenne, Mediane, IQR, Lehmer, Geom, MidRange, Harmonic, PeerTrust ou Trustman")
         else:
             payload[node]["score_glob"] = None

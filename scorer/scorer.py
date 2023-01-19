@@ -31,16 +31,16 @@ score_glob=[]
 while True:
     time.sleep(int(os.environ['SCORER_INTERVAL']))
 
-    payload = {}
 
     nodes = requests.get(simulator_url).json()
 
+    payload = {}
     for node in nodes:
-        payload[node] = dict ()
+        payload[node] = dict()
 
     #Initialisation de liste vide de score pour chacune des méthodes
     if (moy_cpu==[] and nodes!={}):
-        #Compte le nombre de nodes 
+        #Compte le nombre de nodes
         n = vz.nb_nodes(nodes)
         for i in range(n):
             moy_cpu.append([])
@@ -98,8 +98,5 @@ while True:
     cpu_l = [moy_cpu, med_cpu, iqv_cpu, trust_cpu, value_cpu]
     ram_l = [moy_ram, med_ram, iqv_ram, trust_ram, value_ram]
     vz.plot(nodes, cpu_l, ram_l)
-
-    #plot global score 
-    vz.plot_score_glob(nodes, score_glob, name)
 
     requests.post(simulator_url + '/update_scores', json=payload)
