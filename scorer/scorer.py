@@ -99,4 +99,7 @@ while True:
     ram_l = [moy_ram, med_ram, iqv_ram, trust_ram, value_ram]
     vz.plot(nodes, cpu_l, ram_l)
 
+    #plot global score
+    vz.plot_score_glob(nodes, score_glob, name)
+
     requests.post(simulator_url + '/update_scores', json=payload)

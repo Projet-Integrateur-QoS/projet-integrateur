@@ -72,13 +72,6 @@ def maths(nodes, payload):
         payload[node]["cpu_score_lehmer"] = lehmer_mean(cpu_history,2)
         payload[node]["ram_score_lehmer"] = lehmer_mean(ram_history,2)
 
-        # Geometric mean
-        payload[node]["cpu_score_lehmer"] = lehmer_mean(cpu_history,2)
-        payload[node]["ram_score_lehmer"] = lehmer_mean(ram_history,2)
-
-        # Geometric mean
-        payload[node]["cpu_score_lehmer"] = lehmer_mean(cpu_history,2)
-        payload[node]["ram_score_lehmer"] = lehmer_mean(ram_history,2)
 
 def score_glob(nodes, name_f, rate_cpu, rate_ram, payload):
 
