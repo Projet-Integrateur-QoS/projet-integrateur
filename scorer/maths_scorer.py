@@ -16,7 +16,9 @@ def mid_range(data):
     return 0.5*(max(data)+min(data))
 
 def harmonic_mean(data):
-    divide = np.sum(1/data)
+    divide = 0
+    for element in data:
+        divide += 1/element
     return len(data)/divide
 
 def lehmer_mean(data,power):
