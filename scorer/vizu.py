@@ -38,7 +38,7 @@ def plot(nodes, cpu_l, ram_l):
             ["Moyenne Geometrique",cpu_l[3]],
             ["Mid range",cpu_l[4]],
             ["Moyenne harmonique",cpu_l[5]],
-            ["Moyenne de Lehmer",cpu_l[6]],
+            #["Moyenne de Lehmer",cpu_l[6]],
             ["PeerTrust",cpu_l[7]],
             ["CPU_Value", cpu_l[9]]]
 
@@ -49,7 +49,7 @@ def plot(nodes, cpu_l, ram_l):
             ["Moyenne Geometrique",ram_l[3]],
             ["Mid range",ram_l[4]],
             ["Moyenne harmonique",ram_l[5]],
-            ["Moyenne de Lehmer",ram_l[6]],
+            #["Moyenne de Lehmer",ram_l[6]],
             ["PeerTrust",ram_l[7]],
             ["RAM_Value", ram_l[9]]]
 
