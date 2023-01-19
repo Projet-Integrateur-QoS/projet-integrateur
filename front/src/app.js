@@ -12,7 +12,7 @@ if (!front_port) {
   exit()
 }
 
-app.use(express.static('js'))
+app.use(express.static('src/js'))
 
 app.listen(front_port, () => console.log(`The server is listening on port ${front_port}`))
 
