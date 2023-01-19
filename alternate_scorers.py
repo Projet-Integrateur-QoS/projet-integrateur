@@ -27,11 +27,12 @@ def lehmer_mean(data,powerRange:tuple):
 # the json uses a node id per key
 def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,epsilon=0.2,delta=5):
 
+    nodePrioList = []
+    scorePrioList = []
     print(data)
     if data:
         histSize = len(data["0"]["ram"])
-        nodePrioList = []
-        scorePrioList = []
+        nodeNumber = len(data)
 
         mode = 0
         # Check if no priorities
@@ -55,13 +56,13 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
             mode += 1
 
         if mode == 0:
-            nodePrioList = np.ones(histSize)
+            nodePrioList = np.ones(nodeNumber)
             scorePrioList = np.ones(histSize)
         elif mode == 1:
             nodePrioList = nodePriorities
             scorePrioList = np.ones(histSize)
         elif mode == 2:
-            nodePrioList = np.ones(histSize)
+            nodePrioList = np.ones(nodeNumber)
             scorePrioList = scoreTimeFactorList
         else:
             nodePrioList = nodePriorities
@@ -73,7 +74,8 @@ def peerTrust(data,alpha=1,beta=1,nodePriorities=None,scoreTimePriority=None,eps
 
     for node in data:
         nodeScore[node] = dict()
-
+        print("node: ",node)
+        print(nodePrioList)
         maxValue = scorePrioSum + beta*nodePrioList[int(node)]
 
         sumRam = 0
