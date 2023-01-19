@@ -17,7 +17,7 @@ with open('input.csv') as csvfile:
     for row in reader:
         time.sleep(int(os.environ['NODES_INTERVAL']))
 
-        lat_a, lat_b, lat_c, cpu_a, ram_a, cpu_b, ram_b, cpu_c, ram_c, x_c, y_c = row
+        lat_a, lat_b, lat_c, cpu_a, ram_a, cpu_b, ram_b, cpu_c, ram_c, x_c, y_c, x_car, y_car = row
         payload = [
             {
                 "id": 0,
@@ -43,6 +43,14 @@ with open('input.csv') as csvfile:
                 "x": x_c,
                 "y": y_c,
             },
+            {
+                "id": 3,
+                "lat": 0,
+                "cpu": 0,
+                "ram": 0,
+                "x": x_car,
+                "y": y_car,
+            }
         ]
         requests.post(simulator_url + '/new', json=payload)
         print(f"sent row {payload}")
