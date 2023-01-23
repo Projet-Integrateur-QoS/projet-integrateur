@@ -28,10 +28,17 @@
 <script>
   let canvas = document.getElementById("canvas");
   let ctx = canvas.getContext('2d')
+  let nodes
+  let car_position
   setInterval(function () {
     fetch("http://localhost:8000/")
     .then((response) => response.json())
-    .then((data) => window.data = data)
-    .then(() => drawStuff(ctx, data))
+    .then((nodes) => window.nodes = nodes)
+    .then(() => nodes = nodes),
+    fetch("http://localhost:8000/front")
+    .then((response) => response.json())
+    .then((car_position) => window.car_position = car_position)
+    .then(() => car_position = car_position),
+    drawStuff(ctx, window.nodes, window.car_position)
   }, 1000);
 </script>

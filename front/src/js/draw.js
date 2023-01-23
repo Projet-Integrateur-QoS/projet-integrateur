@@ -1,13 +1,13 @@
-const drawStuff = function(ctx, data) {
+const drawStuff = function(ctx, data, pos_car) {
   ctx.fillStyle = "gray";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   offset = (canvas.width-100)/7;
-  if (data) {
-    console.log(data);
+  if (data && pos_car) {
     circle(ctx, "yellow", 50 + data[0]['x']*offset, 50 + data[0]['y']*offset);
     circle(ctx, "yellow", 50 + data[1]['x']*offset, 50 + data[1]['y']*offset);
     circle(ctx, "yellow", 50 + data[2]['x']*offset, 50 + data[2]['y']*offset);
-    car(ctx, 50 + data[3]['x']*offset, 50 + data[3]['y']*offset);
+    console.log(pos_car)
+    car(ctx, 50 + pos_car["x_car"]*offset, 50 + pos_car["y_car"]*offset);
   }
 }
 
@@ -19,6 +19,7 @@ const circle = function(ctx, color, x, y) {
 }
 
 const car = function(ctx, x, y) {
+  print("salut");
   silver = '#B2B2B2';
 
   // chassis
