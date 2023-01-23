@@ -19,7 +19,6 @@ const circle = function(ctx, color, x, y) {
 }
 
 const car = function(ctx, x, y) {
-  print("salut");
   silver = '#B2B2B2';
 
   // chassis
