@@ -31,6 +31,6 @@ services:
     ports:
       - "${FRONT_PORT}:${FRONT_PORT}"
     volumes:
-      - ./front/src:/src
+      - ./front/src:/data/src
     environment:
       - FRONT_PORT=${FRONT_PORT}
