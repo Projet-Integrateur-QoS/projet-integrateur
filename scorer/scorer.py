@@ -135,7 +135,7 @@ while True:
     #Choisir importance du taux cpu et ram (0.7 : cpu et 0.3 : ram par exemple), la somme doit valoir 1
     rate_cpu = 0.7
     rate_ram = 0.3
-    name = "Trustman"
+    name = "Moyenne"
     ms.score_glob(nodes, name, rate_cpu, rate_ram, payload)
     vz.append_m(nodes, score_glob, payload, "score_glob")
 

@@ -22,14 +22,11 @@ def Trustman_Scorer(dataHist, payload):
             list_cpu.append(0)
         else:
             list_cpu.append(float(dataHist[node]["cpu"][0]))
-
         if dataHist[node]["ram"][0] == None :
             #Mettre le score à 0
             list_ram.append(0)
-
         else:
             list_ram.append(float(dataHist[node]["ram"][0]))
-
 
     if(list_ram != [] and list_cpu != []):
         best_resource_cpu = max(list_cpu)
@@ -45,17 +42,21 @@ def Trustman_Scorer(dataHist, payload):
         if(dataHist[node]["cpu_score_trust"] != None and dataHist[node]["ram_score_trust"] != None):
 
             if(int(node) == indice_best_cpu) :
-                new_score_cpu = Augmentation_score(float(dataHist[str(indice_best_cpu)]["cpu_score_trust"]),best_resource_cpu)
+                new_score_cpu = Augmentation_score(float(dataHist[str(indice_best_cpu)]["cpu_score_trust"]),
+                                                   best_resource_cpu)
             else :
                 #diminution
-                new_score_cpu = Dimunition_score(float(dataHist[node]["cpu_score_trust"]),float(dataHist[node]["cpu"][0]),best_resource_cpu)
+                new_score_cpu = Dimunition_score(float(dataHist[node]["cpu_score_trust"]),
+                                                 float(dataHist[node]["cpu"][0]), best_resource_cpu)
 
             if(int(node) == indice_best_ram) :
                 #Mettre à jour le score des nodes
-                new_score_ram = Augmentation_score(float(dataHist[str(indice_best_ram)]["ram_score_trust"]),best_resource_ram)
+                new_score_ram = Augmentation_score(float(dataHist[str(indice_best_ram)]["ram_score_trust"]),
+                                                   best_resource_ram)
             else :
-                new_score_ram = Dimunition_score(float(dataHist[node]["ram_score_trust"]),float(dataHist[node]["ram"][0]),best_resource_ram)
-        else:
+                new_score_ram = Dimunition_score(float(dataHist[node]["ram_score_trust"]),
+                                                 float(dataHist[node]["ram"][0]), best_resource_ram)
+        else: #dans le cas où c'est la premier score et qu'il n'y a pas de score précédent 
             new_score_cpu = 0.5
             new_score_ram = 0.5
 
