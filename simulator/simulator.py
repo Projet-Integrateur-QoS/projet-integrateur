@@ -11,8 +11,8 @@ HIST_MAXLEN = 20
 
 app = Flask(__name__)
 nodes = dict()
-car_x = 0
-car_y = 0
+x_car = 0
+y_car = 0 
 
 def create_new_node():
     return {
@@ -45,6 +45,11 @@ def create_new_node():
 @app.route("/new", methods=['POST'])
 def new_input():
     payload = request.get_json()
+    global x_car
+    global y_car
+    x_car = payload["car_x"]
+    y_car = payload["car_y"]
+
     for node in payload["nodes"]:
         node_id = node['id']
         if node_id not in nodes:
@@ -54,15 +59,21 @@ def new_input():
         nodes[node_id]['ram'].appendleft(node['ram'])
         nodes[node_id]['x'] = node['x']
         nodes[node_id]['y'] = node['y']
-    payload["car_x"]
-    payload["car_y"]
 
     return payload
 
 
 @app.route("/", methods=['GET'])
-def get():
+def root():
     raw = json.dumps(nodes, indent=2, cls=CustomEncoder)
+    response = Response(raw, mimetype='application/json')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+@app.route("/front", methods=['GET'])
+def front():
+    payload = {'x_car' : x_car, 'y_car' : y_car}
+    raw = json.dumps(payload, indent=2, cls=CustomEncoder)
     response = Response(raw, mimetype='application/json')
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response

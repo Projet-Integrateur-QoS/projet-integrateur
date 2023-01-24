@@ -1,20 +1,37 @@
-const drawStuff = function(ctx, data) {
+const drawStuff = function(ctx, data, pos_car) {
   ctx.fillStyle = "gray";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   offset = (canvas.width-100)/7;
-  if (data) {
-    console.log(data);
-    circle(ctx, "yellow", 50 + data[0]['x']*offset, 50 + data[0]['y']*offset);
-    circle(ctx, "yellow", 50 + data[1]['x']*offset, 50 + data[1]['y']*offset);
-    circle(ctx, "yellow", 50 + data[2]['x']*offset, 50 + data[2]['y']*offset);
-    car(ctx, 50 + data[3]['x']*offset, 50 + data[3]['y']*offset);
+  if (data && pos_car) {
+    circle(ctx, data[0]['cpu_score_trust'], data[0]['ram_score_trust'], 50 + data[0]['x']*offset, 50 + data[0]['y']*offset)
+    circle(ctx, data[1]['cpu_score_trust'], data[1]['ram_score_trust'], 50 + data[1]['x']*offset, 50 + data[1]['y']*offset);
+    circle(ctx, data[2]['cpu_score_trust'], data[2]['ram_score_trust'], 50 + data[2]['x']*offset, 50 + data[2]['y']*offset);
+    car(ctx, 50 + pos_car["x_car"]*offset, 50 + pos_car["y_car"]*offset);
+    write(ctx, "cpu", 50 + data[0]['x']*offset -9, 50 + data[0]['y']*offset - 9);
+    write(ctx, "ram", 50 + data[0]['x']*offset -10, 50 + data[0]['y']*offset + 12);
+    write(ctx, "cpu", 50 + data[1]['x']*offset -9, 50 + data[1]['y']*offset - 9);
+    write(ctx, "ram", 50 + data[1]['x']*offset -10, 50 + data[1]['y']*offset + 12);
+    write(ctx, "cpu", 50 + data[2]['x']*offset -9, 50 + data[2]['y']*offset - 9);
+    write(ctx, "ram", 50 + data[2]['x']*offset -10, 50 + data[2]['y']*offset + 12);
   }
 }
 
-const circle = function(ctx, color, x, y) {
-  ctx.fillStyle = color;
+const circle = function(ctx, s_cpu, s_ram, x, y) {
+  ctx.fillStyle = getColor(s_cpu);
   ctx.beginPath();
-  ctx.arc(x, y, 15, (Math.PI / 180) * 0, (Math.PI / 180) * 360);
+  ctx.arc(x, y, 25, 0, Math.PI, false);
+  ctx.fill();
+
+  ctx.fillStyle = getColor(s_ram);
+  ctx.beginPath();
+  ctx.arc(x, y, 25, 0, Math.PI, true);
+  ctx.fill();
+}
+
+const write = function(ctx, txt, x, y) {
+  ctx.fillStyle = 'black';
+  ctx.font = "10px Arial";
+  ctx.fillText(txt,x,y);
   ctx.fill();
 }
 
@@ -89,4 +106,41 @@ const car = function(ctx, x, y) {
     y_logo - 0.5 * (size_logo * 0.05)
   );
   ctx.fill();
+}
+
+
+const getColor = function(t) {
+  let color
+  if (t <= 0.1) {
+    color = "#7F00FF";
+  }
+  else if (t <= 0.2) {
+    color = "#0000FF";
+  }
+  else if (t <= 0.3) {
+    color = "#007FFF";
+  }
+  else if (t <= 0.4) {
+    color = "#00FFFF";
+  }
+  else if (t <= 0.5) {
+    color = "#00FF7F";
+  }
+  else if (t <= 0.6) {
+    color = "#00FF00";
+  }
+  else if (t <= 0.7) {
+    color = "#7FFF00";
+  }
+  else if (t <= 0.8) {
+    color = "#FFFF00";
+  }
+  else if (t <= 0.9) {
+    color = "#FF7F00";
+  }
+  else {
+    color = "#FF0000";
+  }
+
+  return color;
 }
