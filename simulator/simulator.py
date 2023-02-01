@@ -73,6 +73,7 @@ def root():
 @app.route("/front", methods=['GET'])
 def front():
     payload = {'x_car' : x_car, 'y_car' : y_car}
+    
     raw = json.dumps(payload, indent=2, cls=CustomEncoder)
     response = Response(raw, mimetype='application/json')
     response.headers.add('Access-Control-Allow-Origin', '*')
